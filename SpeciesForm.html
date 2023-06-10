@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Species List</title>
+	<style>
+    /* Overall body styling */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  background-image: linear-gradient( #020024, #090979, #00d4ff);
+  background-size: 600% 100%;
+  animation: Gradient 15s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+#stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1; /* put stars behind other elements */
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background-color: #FFF;
+  border-radius: 50%;
+}
+
+@keyframes sparkle {
+  0% { opacity: 0; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+@keyframes Gradient {
+  0% { background-position: 0% 50% }
+  50% { background-position: 100% 50% }
+  100% { background-position: 0% 50% }
+}
+    /* Form styling */
+#speciesForm {
+  display: flex;
+  flex-direction: column;
+  width: 90%; /* Allow some space around the form on smaller screens */
+  max-width: 600px; /* Maximum form width for large screens */
+  margin: auto;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  position: relative; /* Required to set z-index */
+  z-index: 3; /* Higher than the stars */
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;  
+  align-items: center; 
+  justify-content: space-between; 
+}
+
+    /* Input and select fields styling */
+#speciesForm input, #speciesForm select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+    /* Button styling */
+#speciesForm input[type="submit"], #speciesForm input[type="button"] {
+  cursor: pointer;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+}
+
+select:hover, input[type="submit"]:hover, input[type="button"]:hover {
+	transform: scale(1.05);
+    background-color: #0056b3;
+}
+#confirmationPage {
+  font-family: Arial, sans-serif;
+  color: #444;
+  padding: 20px;
+  z-index: 3;
+  text-shadow: 1px 1px 2px #fff, -1px -1px 2px #fff, 1px -1px 2px #fff, -1px 1px 2px #fff;
+}
+
+#confirmationPage h1,
+#confirmationPage h2,
+#confirmationPage p {
+  text-align: center;
+}
+
+#returnButton {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#returnButton:hover {
+  background-color: #0056b3;
+}
+    /* Creature name styling */
+#creature-name {
+  text-align: center; 
+  font-weight: bold; 
+  font-size: 2em;
+  margin-top: 20px;
+}
+    /* Visual description styling */
+#visualDescription {
+  text-align: center; 
+  font-weight: bold; 
+  font-size: 1.5em;
+  margin-top: 20px;
+}
+    /* Species description styling */
+#description {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+	/* Title styling */
+.form-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+#copyButton {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 1em;
+  color: #fff;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#copyButton:hover {
+  background-color: #0056b3;
+}
+	</style>
+</head>
+<body>
+	
+  <form id="speciesForm">
+  <h1 class="form-title">Create Your Species</h1>
+  	<input type="button" value="Random Selection" onclick="randomSelection()">
+  <div class="form-grid">
+    <label for="bodyType">Body Type:</label>
+    <select id="bodyType">
+      <option value="Bipedal">Bipedal</option>
+      <option value="Quadrapedal">Quadrapedal</option>
+	  <option value="Spherical">Spherical</option>
+	  <option value="Serpentine">Serpentine</option>
+      <option value="Avian">Avian</option>
+	  <option value="Insectoid">Insectoid</option>
+	  <option value="Aquatic">Aquatic</option>
+	  <option value="Amorphous">Amorphous</option>
+	  <option value="Centauroid">Centauroid</option>
+	  <option value="Floating">Floating</option>
+    </select>
+    <label for="skinType">Skin Type:</label>
+    <select id="skinType">
+      <option value="Scales">Scales</option>
+      <option value="Fur">Fur</option>
+      <option value="Feathers">Feathers</option>
+      <option value="Chitin">Chitin</option>
+      <option value="Smooth Skin">Smooth Skin</option>
+      <option value="Rough Skin">Rough Skin</option>
+      <option value="Transparent">Transparent</option>
+      <option value="Metallic">Metallic</option>
+      <option value="Bioluminescent">Bioluminescent</option>
+      <option value="Ethereal">Ethereal</option>
+    </select>
+	<label for="eyeNumber">Number of Eyes:</label>
+    <select id="eyeNumber">
+      <option value="One Eye">One Eye</option>
+      <option value="Two Eyes">Two Eyes</option>
+      <option value="Three Eyes">Three Eyes</option>
+      <option value="Multiple Eyes">Multiple Eyes</option>
+      <option value="Eye Stalks">Eye Stalks</option>
+      <option value="No Eyes">No Eyes</option>
+      <option value="Varying Eyes">Varying Eyes</option>
+	</select>
+	<label for="limbNumber">Number of Limbs:</label>
+    <select id="limbNumber">
+      <option value="One Limb">One Limb</option>
+      <option value="Two Limbs">Two Limbs</option>
+      <option value="Four Limbs">Four Limbs</option>
+      <option value="Six Limbs">Six Limbs</option>
+      <option value="Eight Limbs">Eight Limbs</option>	  
+      <option value="Tentacles">Tentacles</option>
+      <option value="No Limbs">No Limbs</option>
+      <option value="Variable Limbs">Variable Limbs</option>
+      <option value="Retractable Limbs">Retractable Limbs</option>
+	</select>
+	<label for="size">Average Size:</label>
+    <select id="size">
+      <option value="Tiny">Tiny</option>
+      <option value="Small">Small</option>
+      <option value="Medium">Medium</option>
+      <option value="Large">Large</option>
+      <option value="Very Large">Very Large</option>	  
+      <option value="Huge">Huge</option>
+      <option value="Giant">Giant</option>
+      <option value="Gargantuan">Gargantuan</option>
+      <option value="Highly Variable">Hight Variable</option>
+	</select>
+	<label for="intelligence">Intelligence:</label>
+    <select id="intelligence">
+      <option value="Non-Sapient">Non-Sapient</option>
+      <option value="Semi-Sapient">Semi-Sapient</option>
+      <option value="Sapient">Sapient</option>
+      <option value="Large">Large</option>
+      <option value="Very Large">Very Large</option>	  
+      <option value="Huge">Huge</option>
+	</select>
+	<label for="diet">Dietary Preference:</label>
+    <select id="diet">
+      <option value="Carnivore">Carnivore</option>
+      <option value="Herbivore">Herbivore</option>
+      <option value="Omnivore">Omnivore</option>
+      <option value="Insectivore">Insectivore</option>
+      <option value="Piscivore">Piscivore</option>	  
+      <option value="Photosynthetic">Photosynthetic</option>
+      <option value="Chemosynthetic">Chemosynthetic</option>
+      <option value="Lithovore">Lithovore</option>
+      <option value="Energy Absorber">Energy Absorber</option>
+	</select>
+	<label for="lifespan">Lifespan:</label>
+    <select id="lifespan">
+      <option value="Minute">Carnivore</option>
+      <option value="Brief">Herbivore</option>
+      <option value="Short">Omnivore</option>
+      <option value="Human-like">Insectivore</option>
+      <option value="Extended">Piscivore</option>	  
+      <option value="Long">Photosynthetic</option>
+      <option value="Very Long">Chemosynthetic</option>
+      <option value="Immortal">Lithovore</option>
+      <option value="Variable Lifespan">Energy Absorber</option>
+	</select>
+	<label for="communication">Communication Style:</label>
+    <select id="communication">
+      <option value="Verbal">Carnivore</option>
+      <option value="Telepathic">Herbivore</option>
+      <option value="Physical Signals">Omnivore</option>
+      <option value="Pheromones">Insectivore</option>
+      <option value="Color Change">Piscivore</option>	  
+      <option value="Bioluminescent Signals">Photosynthetic</option>
+      <option value="Electrical Signals">Chemosynthetic</option>
+      <option value="Musical">Lithovore</option>
+      <option value="Combination">Energy Absorber</option>
+	</select>
+	<label for="culture">Cultural Focus:</label>
+    <select id="culture">
+      <option value="Artistic">Artistic</option>
+      <option value="Warlike">Warlike</option>
+      <option value="Technological">Technological</option>
+      <option value="Spiritual">Spiritual</option>
+      <option value="Scholarly">Scholarly</option>	  
+      <option value="Harmonious">Harmonious</option>
+      <option value="Trade">Trade</option>
+      <option value="Diplomacy">Diplomacy</option>
+      <option value="Individualistic">Individualistic</option>
+	</select>
+	<label for="reproduction">Reproductive Method:</label>
+    <select id="reproduction">
+      <option value="Sexual">Sexual</option>
+      <option value="Asexual">Asexual</option>
+      <option value="Spores">Spores</option>
+      <option value="Budding">Budding</option>
+      <option value="Eggs">Eggs</option>	  
+      <option value="Live Birth">Live Birth</option>
+      <option value="Parthenogenesis">Parthenogenesis</option>
+      <option value="Cloning">Cloning</option>
+      <option value="Transformation">Transformation</option>
+	</select>
+	<label for="social">Social Structure:</label>
+    <select id="social">
+      <option value="Hierarchy">Hierarchy</option>
+      <option value="Egalitarian">Egalitarian</option>
+      <option value="Solitary">Solitary</option>
+      <option value="Pack">Pack</option>
+      <option value="Hive Mind">Hive Mind</option>	  
+      <option value="Matriarchal">Matriarchal</option>
+      <option value="Patriarchal">Patriarchal</option>
+      <option value="Caste">Caste</option>
+      <option value="Tribal">Tribal</option>
+	</select>
+	<label for="habitat">Habitat Preference:</label>
+    <select id="habitat">
+      <option value="Terrestrial">Terrestrial</option>
+      <option value="Aquatic">Aquatic</option>
+      <option value="Aerial">Aerial</option>
+      <option value="Subterranean">Subterranean</option>
+      <option value="Arctic">Arctic</option>	  
+      <option value="Desert">Desert</option>
+      <option value="Jungle">Jungle</option>
+      <option value="Cosmic">Cosmic</option>
+      <option value="Volcanic">Volcanic</option>
+	</select>
+	<label for="techLevel">Technology Level:</label>
+    <select id="techLevel">
+      <option value="Primitive">Primitive</option>
+      <option value="Bronze Age">Bronze Age</option>
+      <option value="Iron Age">Iron Age</option>
+      <option value="Medieval">Medieval</option>
+      <option value="Industrial">Industrial</option>	  
+      <option value="Modern">Modern</option>
+      <option value="Advanced">Advanced</option>
+      <option value="Futuristic">Futuristic</option>
+      <option value="Mixed">Mixed</option>
+	</select>
+	<label for="magic">Magic Affinity:</label>
+    <select id="magic">
+      <option value="Non-Magical">Non-Magical</option>
+      <option value="Learned Magic">Learned Magic</option>
+      <option value="Innately Magic">Innately Magic</option>
+      <option value="Magic Shapers">Magic Shapers</option>
+      <option value="Magic Immune">Magic Immune</option>	  
+      <option value="Magic Dependent">Magic Dependent</option>
+      <option value="Magic Amplifiers">Magic Amplifiers</option>
+      <option value="Magic Nullifiers">Magic Nullifiers</option>
+      <option value="Magic Sensitive">Magic Sensitive</option>
+	</select>
+	<label for="otherSpecies">Other Species:</label>
+    <select id="otherSpecies">
+      <option value="Friendly">Friendly</option>
+      <option value="Hostile">Hostile</option>
+      <option value="Indifferent">Indifferent</option>
+      <option value="Curious">Curious</option>
+      <option value="Cooperative">Cooperative</option>	  
+      <option value="Dominating">Dominating</option>
+      <option value="Protective">Protective</option>
+      <option value="Fearful">Fearful</option>
+      <option value="Isolationist">Isolationist</option>
+	</select>
+	<label for="ecosystem">Role in Ecosystem:</label>
+    <select id="ecosystem">
+      <option value="Predator">Predator</option>
+      <option value="Prey">Prey</option>
+      <option value="Scavenger">Scavenger</option>
+      <option value="Producer">Producer</option>
+      <option value="Decomposer">Decomposer</option>	  
+      <option value="Keystone">Keystone</option>
+      <option value="Invasive">Invasive</option>
+      <option value="Endangered">Endangered</option>
+      <option value="Balanced">Balanced</option>
+	</select>
+	<label for="techFocus">Technological Focus:</label>
+    <select id="techFocus">
+      <option value="Space Travel">Space Travel</option>
+      <option value="Cybernetics">Cybernetics</option>
+      <option value="Weaponry">Weaponry</option>
+      <option value="Medical Tech">Medical Tech</option>
+      <option value="Artificial Intelligence">Artificial Intelligence</option>	  
+      <option value="Energy Production">Energy Production</option>
+      <option value="Environmental Tech">Environmental Tech</option>
+      <option value="Communication Tech">Communication Tech</option>
+      <option value="Mixed">Mixed</option>
+	</select>
+	<label for="mythReligion">Mythology/Religion:</label>
+    <select id="mythReligion">
+      <option value="Atheistic">Atheistic</option>
+      <option value="Monotheistic">Monotheistic</option>
+      <option value="Polytheistic">Polytheistic</option>
+      <option value="Animistic">Animistic</option>
+      <option value="Ancestor Worship">Ancestor Worship</option>	  
+      <option value="Cosmic Entities">Cosmic Entities</option>
+      <option value="Spiritualism">Spiritualism</option>
+      <option value="Philosophy Based">Philosophy Based</option>
+      <option value="Magic Worship">Magic Worship</option>
+	  <option value="Variable Beliefs">Variable Beliefs</option>
+	</select>
+	</div>
+
+
+    <input type="submit" value="Submit">
+  </form>
+
+	<div id="confirmationPage" style="display: none;">
+		<div id="creature-name" style="text-align: center; font-weight: bold; font-size: 5em;"></div>
+		<p id="description"></p>
+		<div style="text-align: center; font-weight: bold; font-size: 2em;">Copy/Paste this into your favorite AI Art Generator (I use MidJourney):</div>
+		<button id="copyButton">Copy to clipboard</button>
+		<div id="visualDescription" style="text-align: center; font-size: 1em;"></div>
+		<button id="returnButton">Return to Form</button>
+	</div>
+	<div id="stars">
+		<div class="star" style="animation: sparkle 4s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 6s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 3s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 2s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 7s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 8s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 3.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 4.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 5.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 6.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 2.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 7.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 8.5s infinite ease-in-out;"></div>
+		<div class="star" style="animation: sparkle 9s infinite ease-in-out;"></div>
+	</div>
+  <script>
+    document.getElementById('speciesForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+	generate();
+
+
+      // Generate the description based on form inputs
+      var description = "";
+      var bodyType = document.getElementById('bodyType').value;
+      var skinType = document.getElementById('skinType').value;
+      var eyeNumber = document.getElementById('eyeNumber').value;
+      var limbNumber = document.getElementById('limbNumber').value;
+      var size = document.getElementById('size').value;
+      var intelligence = document.getElementById('intelligence').value;
+      var diet = document.getElementById('diet').value;
+      var lifespan = document.getElementById('lifespan').value;
+      var communication = document.getElementById('communication').value;
+      var culture = document.getElementById('culture').value;
+      var reproduction = document.getElementById('reproduction').value;
+      var social = document.getElementById('social').value;
+      var habitat = document.getElementById('habitat').value;
+      var techLevel = document.getElementById('techLevel').value;
+      var magic = document.getElementById('magic').value;
+      var otherSpecies = document.getElementById('otherSpecies').value;
+      var ecosystem = document.getElementById('ecosystem').value;
+      var techFocus = document.getElementById('techFocus').value;
+      var mythReligion = document.getElementById('mythReligion').value;
+
+      // Switch statements for each question to generate description
+        description += "This species has a " + bodyType + " body type, " + skinType + " skin, and " + eyeNumber + ".";
+		description += " Their average size is " + size + " and they have " + limbNumber + ".";
+		description += " They are " + intelligence + " creatures that follow a " + diet + " diet and have a lifespan that is " + lifespan + ".";
+		description += " Their main form of communication is through " + communication + " and they have a " + culture + " culture.";
+		description += " Their reproductive method is " + reproduction + " and they have a " + social + " social structure.";
+		description += " They prefer a " + habitat + " habitat and their technology level is " + techLevel + ".";
+		description += " They have a " + magic + " magic affinity and are " + otherSpecies + " towards other species.";
+		description += " Their role in the ecosystem is as a " + ecosystem + " and their technological focus is on " + techFocus + ".";
+		description += " Their mythology/religion is largely " + mythReligion + ".";
+
+
+      // Display the confirmation page with the description
+      document.getElementById('speciesForm').style.display = 'none';
+      document.getElementById('confirmationPage').style.display = 'block';
+      document.getElementById('description').textContent = description;
+	  
+	var visualDescription = [];
+    
+    visualDescription.push(bodyType + " Creature", skinType, eyeNumber, limbNumber, size + " Sized", "Concept art");
+
+    // Concatenate the array into a string separated by commas
+    var finalVisualDescription = visualDescription.join(', ');
+
+    // Display the final visual description
+    document.getElementById('visualDescription').textContent = finalVisualDescription;
+	 
+	document.querySelector("#copyButton").addEventListener("click", function() {
+		navigator.clipboard.writeText(document.querySelector("#visualDescription").textContent)
+    .then(() => { alert('Text copied to clipboard'); })
+    .catch(err => { alert('Error in copying text: ', err); })
+	});
+    });
+  </script>
+  <script>
+  	function randomSelection() {
+    var selects = document.getElementsByTagName('select');
+    for (var i = 0; i < selects.length; i++) {
+      var options = selects[i].options;
+      var randomOptionIndex = Math.floor(Math.random() * options.length);
+      selects[i].selectedIndex = randomOptionIndex;
+		}
+	}
+	</script>
+	<script>
+	var syllables = 
+	['ba', 'be', 'bi', 'bo', 'bu', 
+	'ca', 'ce', 'ci', 'co', 'cu', 
+	'da', 'de', 'di', 'do', 'du', 
+	'fa', 'fe', 'fi', 'fo', 'fu', 
+	'ga', 'ge', 'gi', 'go', 'gu', 
+	'ha', 'he', 'hi', 'ho', 'hu', 
+	'ja', 'je', 'ji', 'jo', 'ju', 
+	'ka', 'ke', 'ki', 'ko', 'ku', 
+	'la', 'le', 'li', 'lo', 'lu', 
+	'ma', 'me', 'mi', 'mo', 'mu', 
+	'na', 'ne', 'ni', 'no', 'nu', 
+	'pa', 'pe', 'pi', 'po', 'pu', 
+	'ra', 're', 'ri', 'ro', 'ru', 
+	'sa', 'se', 'si', 'so', 'su', 
+	'ta', 'te', 'ti', 'to', 'tu', 
+	'va', 've', 'vi', 'vo', 'vu', 
+	'xa', 'xe', 'xi', 'xo', 'xu', 
+	'za', 'ze', 'zi', 'zo', 'zu',
+	'plu', 'gre', 'sti', 'blu', 'fla', 
+	'gli', 'pro', 'fri', 'sto', 'fle', 
+	'gle', 'pri', 'sta', 'flo', 'gli', 
+	'pru', 'ste', 'fra', 'sli', 'gro', 
+	'ple', 'str', 'flu', 'sla', 'gle', 
+	'pra', 'sti', 'fro', 'sle', 'glu', 
+	'pre', 'stu', 'fli', 'slo', 'gla', 
+	'pri', 'sta', 'fra', 'sli', 'gro', 
+	'pro', 'ste', 'fre', 'sla', 'glu', 
+	'pru', 'sti', 'fro', 'sle', 'gla'];
+	</script>
+	<script>
+	function generateName() {
+    var nameLength = Math.floor(Math.random() * 4) + 1; // Random number between 1 and 4
+    var name = '';
+    for(var i = 0; i < nameLength; i++) {
+        var syllableIndex = Math.floor(Math.random() * syllables.length);
+        name += syllables[syllableIndex];
+    }
+    return name.charAt(0).toUpperCase() + name.slice(1); // Capitalize the first letter
+}
+	</script>
+	<script>
+function generate() {
+    var name = generateName();
+    document.getElementById('creature-name').innerText = name;
+	}
+	</script>
+	<script>
+function stars(){
+  var stars = document.getElementsByClassName("star");
+
+  // Array of colors
+  var colors = ['purple', 'blue', 'yellow', 'white', 'red'];
+
+  for (var i = 0; i < stars.length; i++) {
+    var star = stars[i];
+
+    // This function will be called to update the star's position
+    function updateStarPosition() {
+      var randomTop = Math.random() * window.innerHeight;
+      var randomLeft = Math.random() * window.innerWidth;
+
+      star.style.top = randomTop + 'px';
+      star.style.left = randomLeft + 'px';
+    }
+
+    // Assign a random color to the star
+    var randomColor = colors[Math.floor(Math.random() * colors.length)];
+    star.style.backgroundColor = randomColor;
+
+    // Call the function initially to set the star's initial position
+    updateStarPosition();
+
+    // Add an event listener to the star so its position is updated at the end
+    // of each animation iteration
+    star.addEventListener('animationiteration', updateStarPosition);
+  }
+}
+
+	window.onload = function() {
+	stars();
+	document.getElementById('returnButton').addEventListener('click', function() {
+		location.reload();
+	});
+	};
+	</script>
+</body>
+</html>
